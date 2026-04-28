@@ -228,8 +228,8 @@ docker compose up -d
 | 模型名 | mode | tier |
 | :-- | :-- | :-- |
 | `grok-4.20-0309-non-reasoning` | `fast` | `basic` |
-| `grok-4.20-0309` | `auto` | `basic` |
-| `grok-4.20-0309-reasoning` | `expert` | `basic` |
+| `grok-4.20-0309` | `auto` | `super` |
+| `grok-4.20-0309-reasoning` | `expert` | `super` |
 | `grok-4.20-0309-non-reasoning-super` | `fast` | `super` |
 | `grok-4.20-0309-super` | `auto` | `super` |
 | `grok-4.20-0309-reasoning-super` | `expert` | `super` |
@@ -238,8 +238,8 @@ docker compose up -d
 | `grok-4.20-0309-reasoning-heavy` | `expert` | `heavy` |
 | `grok-4.20-multi-agent-0309` | `heavy` | `heavy` |
 | `grok-4.20-fast` | `fast` | `basic`，优先使用高等级账号池 |
-| `grok-4.20-auto` | `auto` | `basic`，优先使用高等级账号池 |
-| `grok-4.20-expert` | `expert` | `basic`，优先使用高等级账号池 |
+| `grok-4.20-auto` | `auto` | `super`，优先使用高等级账号池 |
+| `grok-4.20-expert` | `expert` | `super`，优先使用高等级账号池 |
 | `grok-4.20-heavy` | `heavy` | `heavy` |
 | `grok-4.3-beta` | `grok-420-computer-use-sa` | `super` |
 
@@ -592,7 +592,7 @@ curl -L http://localhost:8000/v1/videos/<video_id>/content \
 | `size` | 支持 `720x1280`, `1280x720`, `1024x1024`, `1024x1792`, `1792x1024` |
 | `resolution_name` | `480p` 或 `720p` |
 | `preset` | `fun`, `normal`, `spicy`, `custom` |
-| `input_reference[]` | 可选图生视频参考图，multipart 文件字段；最多使用前 5 张 |
+| `input_reference[]` | 可选图生视频参考图，multipart 文件字段；最多使用前 7 张 |
 | `video_id` | `POST /v1/videos` 返回的视频任务 ID，用于查询任务或下载成片 |
 
 <br>
