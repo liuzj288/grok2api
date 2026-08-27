@@ -1,617 +1,526 @@
-<img alt="Grok2API" src="https://github.com/user-attachments/assets/037a0a6e-7986-41cc-b4af-04df612ee886" />
+<p align="center">
+  <img alt="Grok2API" src="./frontend/public/grok2api.png" width="720" />
+</p>
 
-[![Python](https://img.shields.io/badge/python-3.13%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.119%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Version](https://img.shields.io/badge/version-2.0.4.rc2-111827)](pyproject.toml)
-[![License](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
-[![English](https://img.shields.io/badge/English-2563EB?logo=bookstack&logoColor=white)](docs/README.en.md)
-[![DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/chenyme/grok2api)
-[![项目文档](https://img.shields.io/badge/项目文档-0F766E?logo=readthedocs&logoColor=white)](https://blog.cheny.me/blog/posts/grok2api)
+<p align="center">
+  <strong>A multi-account API gateway for Grok Build, Grok Web, and Grok Console</strong>
+</p>
 
+<p align="center">
+  English | <a href="./README.zh-CN.md">简体中文</a>
+</p>
 
-> [!IMPORTANT]
-> **项目停更公告**  
-> 因个人精力有限，且官方风控关注等多方因素影响，本 Grok2API 项目已正式停更。好消息是 x-statsig-id 仍可以通过其他手段获取/破解，仓库代码将归档并仅作学习与研究参考，后续不再进行功能开发、问题修复与技术支持。感谢各位一路以来的关注与支持！
+<p align="center">
+  <a href="./backend/go.mod"><img alt="Go" src="https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white" /></a>
+  <a href="./frontend/package.json"><img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=111827" /></a>
+  <a href="https://github.com/chenyme/grok2api/pkgs/container/grok2api"><img alt="Docker" src="https://img.shields.io/badge/Docker-amd64%20%7C%20arm64-2496ED?logo=docker&logoColor=white" /></a>
+</p>
+
+<p align="center">
+  <a href="https://trendshift.io/repositories/19868?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-19868" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/19868" alt="chenyme%2Fgrok2api | Trendshift" width="250" height="55"/></a>
+</p>
 
 > [!TIP]
-> **个人新项目**  
-> 顺便推荐我的新项目 [DEEIX-AI：DEEIX-Chat 轻量化 AI 平台](https://github.com/DEEIX-AI/DEEIX-Chat)：企业级模型路由、对话、文件、工具、计费、身份和运维的一体化 AI 平台，全面且极致的低占用，空载运行时仅占用 34 MB。
+> Check out [DEEIX-AI / DEEIX-Chat](https://github.com/DEEIX-AI/DEEIX-Chat), a lightweight, integrated AI platform for model routing, chat, files, tools, billing, identity, and operations.
 
 > [!NOTE]
-> 本项目仅供学习与研究交流。请务必遵循 Grok 的使用条款及当地法律法规，不得用于非法用途！
+> This project is for technical research and learning purposes only. Please comply with Grok's official terms of use and local laws when using it; otherwise, you will be solely responsible for all consequences!
+
+## Sponsors
+> [Want to sponsor this project?](mailto:chenyme03@gmail.com)
+
+<table>
+<tr>
+<td width="200" align="center" valign="middle"><a href="https://go.apimart.ai/gh-grok2api"><img src="frontend/public/sponner/api-mart.jpg" alt="APIMart" width="180"></a></td>
+<td valign="middle">Thanks to APIMart for sponsoring this project! APIMart is a low-cost API platform for AI image &amp; video generation — GPT-Image-2 from $0.006/image, 160+ images per dollar. One async API covers both image and video: submit a task, get an ID, fetch results via polling or callback. Batch tens of thousands of images without timeouts, switch models without changing code. Pay-as-you-go with no monthly fee — <a href="https://go.apimart.ai/gh-grok2api">sign up here</a> to get started.</td>
+</tr>
+<tr>
+<td width="200" align="center" valign="middle"><a href="https://www.packyapi.com/register"><img src="frontend/public/sponner/packycode.png" alt="PackyCode" width="180"></a></td>
+<td valign="middle">PackyCode is a stable and professional API relay for Claude Code, Codex, Gemini, and leading Chinese models. With fast unified access, full-stack observability, risk controls, elastic scaling, and cost optimization, it delivers a smooth developer experience. <a href="https://www.packyapi.com/register">Sign up here</a> to bring production-ready AI into your workflows.</td>
+</tr>
+<tr>
+<td width="200" align="center" valign="middle"><a href="https://github.com/DEEIX-AI/DEEIX-Chat"><img src="frontend/public/sponner/deeix-chat_deeix-ai.png" alt="DEEIX AI / DEEIX Chat" width="160"></a></td>
+<td valign="middle">DEEIX-Chat is an open-source, self-hostable AI Chat platform for individuals, teams, and enterprises that need stable, long-term, unified access to multiple models. It brings models, conversations, files, tool calling, and administration together in one deployable and extensible system. Click <a href="https://github.com/DEEIX-AI/DEEIX-Chat">here</a> to start deploying.</td>
+</tr>
+<tr>
+<td width="200" align="center" valign="middle"><a href="https://www.right.codes/register"><img src="frontend/public/sponner/rightcode.jpg" alt="RightCode" width="160"></a></td>
+<td valign="middle">Right Code is an enterprise-grade AI Agent distribution platform that primarily provides stable access services for Claude Code, Codex, Gemini, and other models. It supports invoicing and dedicated one-to-one assistance for enterprises and teams. Thanks to Right Code for providing token support. Click <a href="https://www.right.codes/register">here</a> to register and get started.</td>
+</tr>
+<tr>
+<td width="200" align="center" valign="middle"><a href="https://api.fenno.ai/s/xCBS"><img src="frontend/public/sponner/fenno-ai.jpg" alt="FennoAI" width="160"></a></td>
+<td valign="middle">FennoAI provides enterprise-grade OpenAI/Anthropic-compatible APIs for Codex, Claude Code, and OpenCode, processing hundreds of billions of tokens daily with global business settlement and invoicing. Through the Grok2API <a href="https://api.fenno.ai/s/xCBS">exclusive offer</a>, USD 1.99 unlocks USD 50 in Coding Plan credits, plus referral commissions up to 20%.</td>
+</tr>
+<tr>
+<td width="200" align="center" valign="middle"><a href="https://s.qiniu.com/RNNZFf"><img src="frontend/public/sponner/qiniu.jpg" alt="Qiniu Cloud AI" width="160"></a></td>
+<td valign="middle">Qiniu Cloud AI, Qiniu Cloud’s (02567.HK) enterprise MaaS platform, offers protocol-compatible access to 150+ global models for text, image, audio, video, and files, serving 1.69+ million users. Grok2API registrations through the <a href="https://s.qiniu.com/RNNZFf">exclusive link</a> receive 12 million free enterprise tokens or 3 million developer tokens.</td>
+</tr>
+</table>
 
 <br>
 
-Grok2API 是一个基于 **FastAPI** 构建的 Grok 网关，支持将 Grok Web 能力以 OpenAI 兼容 API 的方式转换。核心特性：
-- OpenAI 兼容接口：`/v1/models`、`/v1/chat/completions`、`/v1/responses`、`/v1/images/generations`、`/v1/images/edits`、`/v1/videos`、`/v1/videos/{video_id}`、`/v1/videos/{video_id}/content`
-- Anthropic 兼容接口：`/v1/messages`
-- 支持流式与非流式对话、显式思考输出、函数工具结构透传，以及统一的 token / usage 统计
-- 支持多账号池、层级选号、失败反馈、额度同步与自动维护
-- 支持本地缓存图片、视频与本地代理链接返回
-- 支持文生图、图像编辑、文生视频、图生视频
-- 内置 Admin 后台管理、Web Chat、Masonry 生图、ChatKit 语音页面
+## Overview
 
-<br>
+Grok2API is a Go gateway with a built-in React admin console. It manages independent Grok Build, Grok Web, and Grok Console account pools and exposes unified OpenAI- and Anthropic-compatible APIs.
 
-## 服务架构
+### Architecture
 
 ```mermaid
 flowchart LR
-    Client["Clients\nOpenAI SDK / curl / Browser"] --> API["FastAPI App"]
+    %% Color definitions
+    classDef access fill:#e1f5fe,stroke:#01579b
+    classDef core fill:#fff3e0,stroke:#e65100
+    classDef providers fill:#f3e5f5,stroke:#4a148c
+    classDef infra fill:#e8f5e9,stroke:#1b5e20
+    classDef upstream fill:#fce4ec,stroke:#880e4f
 
-    subgraph Products["Products"]
-        direction TB
-        OpenAI["OpenAI APIs\n/v1/*"]
-        Anthropic["Anthropic APIs\n/v1/messages"]
-        Web["Web Products\n/admin /webui/*"]
+    subgraph Access["Access Domain"]
+        direction LR
+        Clients["API Clients"]
+        Admin["React Admin"]
     end
 
-    subgraph Control["Control"]
-        direction TB
-        Models["Model Registry"]
-        Accounts["Account Services"]
-        Proxies["Proxy Services"]
+    subgraph Core["Gateway Core Domain"]
+        direction LR
+        Management["Management Services<br/>Accounts · Models · Keys · Settings"]
+        Sync["Account Sync<br/>Credentials · Quota · Models"]
+        Gateway["Gateway Service<br/>Protocols · Routing · Selection · Retry"]
+        Audit["Audit Service<br/>Usage · Client Billing"]
+        Management --> Sync
+        Gateway -.-> Audit
     end
 
-    subgraph Dataplane["Dataplane"]
-        direction TB
-        Reverse["Reverse Protocol + Transport"]
-        AccountDP["AccountDirectory"]
-        ProxyDP["Proxy Runtime"]
+    subgraph Providers["Provider Channel Domain"]
+        direction LR
+        Registry["Provider Registry"]
+        Build["Grok Build<br/>OAuth · Dynamic Models · Billing"]
+        Web["Grok Web<br/>SSO · Remote Quota · Media"]
+        Console["Grok Console<br/>SSO · Local Window · Stateless"]
+        Registry --> Build
+        Registry --> Web
+        Registry --> Console
     end
 
-    subgraph Platform["Platform"]
-        direction TB
-        Tokens["Token Estimation"]
-        Storage["Storage"]
-        Config["Config Snapshot"]
-        Auth["Auth"]
-        Log["Logging"]
+    subgraph Infra["Shared Infrastructure Domain"]
+        direction LR
+        Egress["Egress Manager<br/>Scopes · Proxy Pool · Fallback · Clearance"]
+        Database[("SQLite / PostgreSQL")]
+        Runtime[("Memory / Redis")]
     end
 
-    API --> OpenAI
-    API --> Anthropic
-    API --> Web
+    Upstream["🌐 Grok Upstream"]
 
-    OpenAI --> Models
-    OpenAI --> AccountDP
-    OpenAI --> ProxyDP
-    OpenAI --> Reverse
-    OpenAI --> Tokens
-    OpenAI --> Storage
+    %% Cross-domain calls
+    Clients --> Gateway
+    Admin --> Management
+    Gateway --> Registry
+    Sync --> Registry
+    Build -->|grok_build| Egress
+    Web -->|grok_web / asset| Egress
+    Console -->|grok_console| Egress
+    Egress --> Upstream
+    Management --> Database
+    Audit --> Database
+    Gateway <--> Runtime
 
-    Anthropic --> Models
-    Anthropic --> AccountDP
-    Anthropic --> ProxyDP
-    Anthropic --> Reverse
-    Anthropic --> Tokens
-
-    Web --> Accounts
-    Web --> Config
-    Web --> Auth
-
-    Accounts --> AccountDP
-    Proxies --> ProxyDP
-    Models --> Reverse
+    %% Application styles
+    class Clients,Admin access
+    class Management,Sync,Gateway,Audit core
+    class Registry,Build,Web,Console providers
+    class Egress,Database,Runtime infra
+    class Upstream upstream
 ```
 
-<br>
+The Gateway routes requests through the Provider Registry. Account Sync refreshes credentials, quota, and models. Each Provider keeps independent account state and uses an isolated egress scope; usage, audits, and client billing are finalized after the request.
 
-## 快速开始
+### Core capabilities
 
-### 本地部署
+| Area | Capabilities |
+| :-- | :-- |
+| APIs | Responses, Chat Completions, Anthropic Messages, Images, and asynchronous Videos |
+| Clients | Codex, Claude Code, OpenAI-compatible SDKs, and Anthropic-compatible SDKs |
+| Accounts | Bulk import/export, quota sync, credential renewal, conversion, tools, and cleanup |
+| Routing | Model discovery, Provider pinning, sticky sessions, quota/concurrency guards, and bounded failover |
+| Sessions | Stored responses, compact, prompt-cache affinity, and optional reasoning replay |
+| Media | Image generation/editing, video jobs, local archiving, and URL/Base64/SSE output |
+| Egress | HTTP/SOCKS/Resin and Trojan/VLESS/Shadowsocks/VMess tunnels, subscriptions, probes, proxy pools, allocation, fallback, and FlareSolverr |
+| Operations | Dashboard, model routes, client keys, audits, runtime settings, and media libraries |
+
+### Provider boundaries
+
+| Provider | Authentication | Models | Main capabilities |
+| :-- | :-- | :-- | :-- |
+| Grok Build | OAuth / Device OAuth | Discovered per account | Responses, Chat, Messages, compact, stored responses, paid-account video |
+| Grok Web | SSO | Built-in, filtered by tier | Responses, Chat, Messages, stored responses, images, image editing, video |
+| Grok Console | SSO | Built-in | Stateless Responses, Chat, Messages, images, image editing, video, TTS, STT, Realtime |
+
+Each Provider keeps its own credentials, quota, health, cooldown, concurrency, and model capabilities. Account retries stay within one route; when one public model ID intentionally aggregates multiple routes, the gateway may select another schedulable route without mixing Provider state.
+
+## Quick start
+
+Official images support `linux/amd64` and `linux/arm64`.
 
 ```bash
-git clone https://github.com/chenyme/grok2api
+git clone https://github.com/chenyme/grok2api.git
 cd grok2api
-cp .env.example .env
-uv sync
-uv run granian --interface asgi --host 0.0.0.0 --port 8000 --workers 1 app.main:app
+cp config.example.yaml config.yaml
 ```
 
-### Docker Compose
+Generate secrets and place them in `config.yaml`:
 
 ```bash
-git clone https://github.com/chenyme/grok2api
-cd grok2api
-cp .env.example .env
+openssl rand -hex 32
+openssl rand -base64 32
+```
+
+```yaml
+secrets:
+  jwtSecret: "replace-with-the-generated-hex-value"
+  credentialEncryptionKey: "replace-with-the-generated-base64-key"
+
+bootstrapAdmin:
+  username: "admin"
+  password: "replace-with-a-strong-password"
+```
+
+Start the service:
+
+```bash
+docker compose pull
 docker compose up -d
+docker compose logs -f grok2api
 ```
 
-### Vercel
+Open `http://127.0.0.1:8000`. The image already includes the frontend; SQLite data and local media are stored in the Compose volume.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/chenyme/grok2api&env=LOG_LEVEL,LOG_FILE_ENABLED,DATA_DIR,LOG_DIR,ACCOUNT_STORAGE,ACCOUNT_REDIS_URL,ACCOUNT_MYSQL_URL,ACCOUNT_POSTGRESQL_URL)
-
-### Render
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/chenyme/grok2api)
-
-### 首次启动
-
-1. 修改 `app.app_key`
-2. 设置 `app.api_key`
-3. 设置 `app.app_url`（否则图片、视频的链接会 403 无权访问）
-
-<br>
-
-## WebUI
-
-### 页面入口
-
-| 页面 | 路径 |
-| :-- | :-- |
-| Admin 登录页 | `/admin/login` |
-| 账号管理 | `/admin/account` |
-| 配置管理 | `/admin/config` |
-| 缓存管理 | `/admin/cache` |
-| WebUI 登录页 | `/webui/login` |
-| Web Chat | `/webui/chat` |
-| Masonry | `/webui/masonry` |
-| ChatKit | `/webui/chatkit` |
-
-### 鉴权规则
-
-| 范围 | 配置项 | 规则 |
-| :-- | :-- | :-- |
-| `/v1/*` | `app.api_key` | 为空则不额外鉴权 |
-| `/admin/*` | `app.app_key` | 默认值 `grok2api` |
-| `/webui/*` | `app.webui_enabled`, `app.webui_key` | 默认关闭；`webui_key` 为空则不额外校验 |
-
-<br>
-
-## 配置体系
-
-### 配置分层
-
-| 位置 | 用途 | 生效时机 |
-| :-- | :-- | :-- |
-| `.env` | 启动前配置 | 服务启动时 |
-| `${DATA_DIR}/config.toml` | 运行时配置 | 保存后即时生效 |
-| `config.defaults.toml` | 默认模板 | 首次初始化时 |
-
-
-
-### 环境变量
-
-| 变量名 | 说明 | 默认值 |
-| :-- | :-- | :-- |
-| `TZ` | 时区 | `Asia/Shanghai` |
-| `LOG_LEVEL` | 日志级别 | `INFO` |
-| `LOG_FILE_ENABLED` | 写入本地文件日志 | `true` |
-| `ACCOUNT_SYNC_INTERVAL` | 账号目录增量同步间隔（秒） | `30` |
-| `ACCOUNT_SYNC_ACTIVE_INTERVAL` | 账号目录检测到变化后的活跃同步间隔（秒） | `3` |
-| `SERVER_HOST` | 服务监听地址 | `0.0.0.0` |
-| `SERVER_PORT` | 服务监听端口 | `8000` |
-| `SERVER_WORKERS` | Granian worker 数量 | `1` |
-| `HOST_PORT` | Docker Compose 宿主机映射端口 | `8000` |
-| `DATA_DIR` | 本地数据根目录（账号库、本地媒体文件、缓存索引统一位于此目录下） | `./data` |
-| `LOG_DIR` | 本地日志目录 | `./logs` |
-| `ACCOUNT_STORAGE` | 账号存储后端 | `local` |
-| `ACCOUNT_LOCAL_PATH` | `local` 模式账号 SQLite 路径 | `${DATA_DIR}/accounts.db` |
-| `ACCOUNT_REDIS_URL` | `redis` 模式 Redis DSN | `""` |
-| `ACCOUNT_MYSQL_URL` | `mysql` 模式 SQLAlchemy DSN | `""` |
-| `ACCOUNT_POSTGRESQL_URL` | `postgresql` 模式 SQLAlchemy DSN | `""` |
-| `ACCOUNT_SQL_POOL_SIZE` | SQL 连接池核心连接数 | `5` |
-| `ACCOUNT_SQL_MAX_OVERFLOW` | SQL 连接池最大溢出连接数 | `10` |
-| `ACCOUNT_SQL_POOL_TIMEOUT` | 等待连接池空闲连接的超时时间（秒） | `30` |
-| `ACCOUNT_SQL_POOL_RECYCLE` | 连接最大复用时间（秒），超时后自动重连 | `1800` |
-| `CONFIG_LOCAL_PATH` | `local` 模式运行时配置文件路径 | `${DATA_DIR}/config.toml` |
-
-运行时配置也支持 `GROK_` 前缀环境变量覆盖，例如 `GROK_APP_API_KEY` 会覆盖 `app.api_key`，`GROK_FEATURES_STREAM` 会覆盖 `features.stream`。
-
-### 系统配置项
-
-| 分组 | 关键项 |
-| :-- | :-- |
-| `app` | `app_key`, `app_url`, `api_key`, `webui_enabled`, `webui_key` |
-| `logging` | `file_level`, `max_files` |
-| `features` | `temporary`, `memory`, `stream`, `thinking`, `auto_chat_mode_fallback`, `thinking_summary`, `dynamic_statsig`, `enable_nsfw`, `show_search_sources`, `custom_instruction`, `image_format`, `imagine_public_image_proxy`, `video_format` |
-| `proxy.egress` | `mode`, `proxy_url`, `proxy_pool`, `resource_proxy_url`, `resource_proxy_pool`, `skip_ssl_verify` |
-| `proxy.clearance` | `mode`, `cf_cookies`, `user_agent`, `browser`, `flaresolverr_url`, `timeout_sec`, `refresh_interval` |
-| `retry` | `reset_session_status_codes`, `max_retries`, `on_codes` |
-| `account.refresh` | `basic_interval_sec`, `super_interval_sec`, `heavy_interval_sec`, `usage_concurrency`, `on_demand_min_interval_sec` |
-| `cache.local` | `image_max_mb`, `video_max_mb` |
-| `chat` | `timeout` |
-| `image` | `timeout`, `stream_timeout` |
-| `video` | `timeout` |
-| `voice` | `timeout` |
-| `asset` | `upload_timeout`, `download_timeout`, `list_timeout`, `delete_timeout` |
-| `nsfw` | `timeout` |
-| `batch` | `nsfw_concurrency`, `refresh_concurrency`, `asset_upload_concurrency`, `asset_list_concurrency`, `asset_delete_concurrency` |
-
-### 图片、视频格式
-
-| 配置项 | 可选值 |
-| :-- | :-- |
-| `features.image_format` | `grok_url`, `local_url`, `grok_md`, `local_md`, `base64` |
-| `features.imagine_public_image_proxy` | `true`, `false` |
-| `features.video_format` | `grok_url`, `local_url`, `grok_html`, `local_html` |
-
-<br>
-
-## 模型支持
-> 可通过 `GET /v1/models` 获取当前支持模型列表。
-
-### Chat
-
-| 模型名 | mode | tier |
-| :-- | :-- | :-- |
-| `grok-4.20-0309-non-reasoning` | `fast` | `basic` |
-| `grok-4.20-0309` | `auto` | `super` |
-| `grok-4.20-0309-reasoning` | `expert` | `super` |
-| `grok-4.20-0309-non-reasoning-super` | `fast` | `super` |
-| `grok-4.20-0309-super` | `auto` | `super` |
-| `grok-4.20-0309-reasoning-super` | `expert` | `super` |
-| `grok-4.20-0309-non-reasoning-heavy` | `fast` | `heavy` |
-| `grok-4.20-0309-heavy` | `auto` | `heavy` |
-| `grok-4.20-0309-reasoning-heavy` | `expert` | `heavy` |
-| `grok-4.20-multi-agent-0309` | `heavy` | `heavy` |
-| `grok-4.20-fast` | `fast` | `basic`，优先使用高等级账号池 |
-| `grok-4.20-auto` | `auto` | `super`，优先使用高等级账号池 |
-| `grok-4.20-expert` | `expert` | `super`，优先使用高等级账号池 |
-| `grok-4.20-heavy` | `heavy` | `heavy` |
-| `grok-4.3-beta` | `grok-420-computer-use-sa` | `super` |
-
-### Image
-
-| 模型名 | mode | tier |
-| :-- | :-- | :-- |
-| `grok-imagine-image-lite` | `fast` | `basic` |
-| `grok-imagine-image` | `auto` | `super` |
-| `grok-imagine-image-pro` | `auto` | `super` |
-
-### Image Edit
-
-| 模型名 | mode | tier |
-| :-- | :-- | :-- |
-| `grok-imagine-image-edit` | `auto` | `super` |
-
-### Video
-
-| 模型名 | mode | tier |
-| :-- | :-- | :-- |
-| `grok-imagine-video` | `auto` | `super` |
-
-<br>
-
-## API 一览
-
-| 接口 | 是否鉴权 | 说明 |
-| :-- | :-- | :-- |
-| `GET /v1/models` | 是 | 列出当前启用模型 |
-| `GET /v1/models/{model_id}` | 是 | 获取单个模型信息 |
-| `POST /v1/chat/completions` | 是 | 对话 / 图像 / 视频统一入口 |
-| `POST /v1/responses` | 是 | OpenAI Responses API 兼容子集 |
-| `POST /v1/messages` | 是 | Anthropic Messages API 兼容接口 |
-| `POST /v1/images/generations` | 是 | 独立图像生成接口 |
-| `POST /v1/images/edits` | 是 | 独立图像编辑接口 |
-| `POST /v1/videos` | 是 | 异步视频任务创建 |
-| `GET /v1/videos/{video_id}` | 是 | 查询视频任务 |
-| `GET /v1/videos/{video_id}/content` | 是 | 获取最终视频文件 |
-| `GET /v1/files/video?id=...` | 否 | 获取本地缓存视频 |
-| `GET /v1/files/image?id=...` | 否 | 获取本地缓存图片 |
-
-<br>
-
-## 接口示例
-
-> 以下示例默认使用 `http://localhost:8000` 地址。
-
-<details>
-<summary><code>GET /v1/models</code></summary>
-<br>
+### Run from source
 
 ```bash
-curl http://localhost:8000/v1/models \
-  -H "Authorization: Bearer $GROK2API_API_KEY"
+cp config.example.yaml config.yaml
+make run
 ```
 
-<details>
-<summary>字段说明</summary>
-<br>
-
-| 字段 | 位置 | 说明 |
-| :-- | :-- | :-- |
-| `Authorization` | Header | 当 `app.api_key` 非空时必填，格式为 `Bearer <api_key>` |
-
-<br>
-</details>
-
-<br>
-</details>
-
-<details>
-<summary><code>POST /v1/chat/completions</code></summary>
-<br>
-
-对话：
+For frontend development:
 
 ```bash
-curl http://localhost:8000/v1/chat/completions \
+cd frontend
+pnpm install
+pnpm dev
+```
+
+## Set up the gateway
+
+1. Sign in with the bootstrap administrator.
+2. Connect a Build, Web, or Console account.
+3. Wait for its quota and model capabilities to sync.
+4. Review the public routes under **Model Routes**.
+5. Create a client key under **Client Keys**.
+6. Call a `/v1/*` endpoint with that key.
+
+After first sign-in, change the administrator password and remove `bootstrapAdmin` from the configuration. Never rotate `credentialEncryptionKey` after credentials have been stored.
+
+### Account operations
+
+| Provider | Connect or import | Export |
+| :-- | :-- | :-- |
+| Build | Device OAuth, JSON/JSONL | Re-importable account file |
+| Web | Pasted/TXT SSO, JSON/JSONL | Re-importable account file |
+| Console | Pasted/TXT SSO, JSON/JSONL | Re-importable account file |
+
+Imports accept UTF-8 BOM. Bulk quota sync, Build credential renewal, Web→Build/Console conversion, account tools, and cleanup report live progress.
+
+Build refresh tokens may rotate when renewed. Do not actively share one Build credential between grok2api, the official CLI, another gateway, or another independent client: one client can consume a token that another client still holds. Authorize each active client separately, or transfer the credential only after the previous client has stopped using it.
+
+Web account tools can accept the terms, set a random birthday corresponding to an age of 20–40, and enable NSFW. Completed steps are recorded and skipped on later runs.
+
+Automatic deletion of old `reauthRequired` accounts is available but disabled by default. Active inference leases and video jobs are protected.
+
+> [!TIP]
+> To migrate from the Python version, export Grok Web SSO tokens as TXT and import them under **Grok Web**. Old pool metadata and databases are not compatible.
+
+## Models and routing
+
+Build models are discovered from each account's actual capabilities. Web and Console use built-in catalogs. The **Model Routes** page shows Provider-qualified routes, endpoint capabilities, and supporting-account counts; clients should treat the currently serviceable results from `GET /v1/models` as authoritative.
+
+### Grok Build
+
+Build does not use one global static model list. Account synchronization reads the upstream `/models` endpoint, and different accounts, subscription tiers, or staged rollouts may expose different models. Routing retains these per-account capabilities instead of replacing the global catalog with one account's response.
+
+| Model | Type | Availability | Gateway surfaces |
+| :-- | :-- | :-- | :-- |
+| Conversation models returned by upstream `/models` (for example, `grok-4.5`) | Conversation | Returned by the selected account | Chat Completions, Responses, Messages, compact, stored responses |
+| `grok-composer-2.5-fast` | Conversation | Grok Build OAuth accounts | Chat Completions, Responses, Messages; supplemented from the OAuth session contract when a sparse upstream catalog omits it |
+| `grok-imagine-video-1.5` | Video | Super/paid Build accounts | Videos; not assigned to Free or unknown-entitlement accounts |
+
+Conversation requests are translated to the Build Responses protocol while preserving the tool, reasoning, multi-turn, and prompt-cache compatibility required by Codex and Claude Code. Build currently exposes no image generation or image editing routes.
+
+### Grok Web
+
+Web uses a built-in catalog filtered by account tier; higher tiers inherit lower-tier models.
+
+| Model | Type | Minimum tier | Gateway surfaces |
+| :-- | :-- | :-- | :-- |
+| `grok-chat-fast` | Conversation | Basic | Chat Completions, Responses, Messages |
+| `grok-chat-auto` | Conversation | Super | Chat Completions, Responses, Messages |
+| `grok-chat-expert` | Conversation | Super | Chat Completions, Responses, Messages |
+| `grok-chat-heavy` | Conversation | Heavy | Chat Completions, Responses, Messages |
+| `grok-imagine-image-lite` | Image | Basic | Images Generations |
+| `grok-imagine-image` | Image | Basic | Images Generations (`enable_pro=false`) |
+| `grok-imagine-image-2.0` | Image | Basic | Images Generations (`enable_pro=true`) |
+| `grok-imagine-image-edit` | Image Edit | Basic | Images Edits |
+| `grok-imagine-video` | Video | Basic for 720p; Super for 480p | Videos |
+
+Web Imagine generation maps `aspect_ratio` and `n` to the browser protocol. `size` remains an OpenAI-compatible aspect-ratio alias, while generation-only `resolution` and `quality` are ignored on Web routes because the upstream product is selected by the model name rather than by those Console-oriented controls.
+
+### Grok Console
+
+Console uses the catalog built into the current release. Conversation forwarding is stateless, while image, video, and voice use the standard xAI resource APIs.
+
+| Model | Type | Gateway surfaces |
+| :-- | :-- | :-- |
+| `grok-4.20-0309-non-reasoning` | Conversation | Chat Completions, Responses, Messages |
+| `grok-4.20-0309-reasoning` | Conversation | Chat Completions, Responses, Messages; the model reasons but the upstream rejects configurable `reasoningEffort` |
+| `grok-4.20-multi-agent-0309` | Conversation | Chat Completions, Responses, Messages |
+| `grok-4.5` | Conversation | Chat Completions, Responses, Messages |
+| `grok-4.3` | Conversation | Chat Completions, Responses, Messages |
+| `grok-build-0.1` | Conversation | Chat Completions, Responses, Messages |
+| `grok-imagine-image` | Image, Image Edit | Images Generations, Images Edits |
+| `grok-imagine-image-quality` | Image, Image Edit | Images Generations, Images Edits |
+| `grok-imagine-image-2.0` | Image, Image Edit | Images Generations, Images Edits |
+| `grok-imagine-video` | Video | Videos |
+| `grok-imagine-video-1.5` | Video | Video generation, including Free Console accounts |
+| `grok-voice-latest`, `grok-voice-think-fast-2.0`, `grok-voice-think-fast-1.0` | Voice | TTS and Realtime WebSocket proxy |
+| `grok-stt` | Voice | STT and OpenAI-compatible audio transcriptions |
+
+Generation and editing capabilities for the same Console image model are grouped into one logical model row; no separate `-edit` model copy is required.
+
+Public names normally omit the Provider. Internally, routes use `Build/`, `Web/`, or `Console/`; qualified names can pin a request to one source.
+
+Web can be weakly linked one-to-one with matching Build and Console accounts. Links share only an anonymous egress identity and provenance display. They never merge credentials, quota, health, cooldown, concurrency, capabilities, or billing.
+
+### Codex, Claude Code, and prompt caching
+
+Responses and Messages support streaming, tools, reasoning, multi-turn sessions, and compaction. Stable client session signals are preserved for Grok Build prompt-cache affinity. Cache hits still require a compatible upstream account and an unchanged prompt prefix. A still-decryptable compaction summary from this gateway instance is expanded even if the session or PromptCacheKey remaps; foreign or undecodable blobs remain a compatibility boundary.
+
+Responses and Chat Completions report OpenAI-style total input. Messages reports Anthropic-style uncached input and cache reads separately. Audits retain total and cached input for billing reconciliation.
+
+## API
+
+Inference endpoints use a client key:
+
+```http
+Authorization: Bearer g2a_xxx_xxx
+```
+
+| Method | Path | Purpose |
+| :-- | :-- | :-- |
+| `GET` | `/healthz`, `/readyz` | Liveness and readiness |
+| `GET` | `/v1/models` | Serviceable models |
+| `POST` | `/v1/responses` | Responses JSON/SSE |
+| `POST` | `/v1/responses/compact` | Compact a supported Response session |
+| `GET`, `DELETE` | `/v1/responses/{id}` | Read or delete a stored response |
+| `POST` | `/v1/chat/completions` | Chat Completions JSON/SSE |
+| `POST` | `/v1/messages` | Anthropic Messages JSON/SSE |
+| `POST` | `/v1/images/generations`, `/v1/images/edits` | Generate or edit images |
+| `POST`, `GET` | `/v1/videos/*` | Create and inspect video jobs |
+| `POST` | `/v1/tts`, `/v1/audio/speech`, `/v1/audio/tasks` | Synthesize speech |
+| `POST` | `/v1/stt`, `/v1/audio/transcriptions` | Transcribe audio |
+| `GET` | `/v1/stt`, `/v1/realtime` | Proxy voice WebSocket sessions |
+| `GET` | `/v1/media/images/{asset_id}`, `/v1/media/videos/{asset_id}` | Read archived media |
+
+Stored responses and compact depend on the selected Provider. The signed-in admin console provides live examples at `/docs`; Swagger is available only when `server.swaggerEnabled: true`.
+
+`/v1/audio/transcriptions` supports `json` (default), `verbose_json`, and `text`. Video edit/extension routes must resolve to Console `grok-imagine-video`; custom public model names remain supported. Monetary billing is applied only when the gateway can reliably measure the official pricing unit: TTS is reserved and settled from its input character count, while REST and streaming STT are settled from the actual audio duration returned by a successful response. Because STT duration is known only after completion, concurrent requests may briefly take a billing-limited key beyond its spend limit. Realtime, video edits/extensions, and custom routes without a recognized official price are currently audited as unpriced; they remain callable and do not consume the spend limit.
+
+Client keys support model allowlists and optional RPM, concurrency, spend, and expiry limits.
+
+```bash
+curl http://127.0.0.1:8000/v1/responses \
+  -H "Authorization: Bearer g2a_xxx_xxx" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
   -d '{
-    "model": "grok-4.20-auto",
-    "stream": true,
-    "reasoning_effort": "high",
-    "messages": [
-      {"role":"user","content":"你好"}
-    ]
+    "model": "your-model",
+    "input": "Explain quantum tunneling in three sentences.",
+    "stream": true
   }'
 ```
 
-图像：
+## Egress and Cloudflare
 
-```bash
-curl http://localhost:8000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
-  -d '{
-    "model": "grok-imagine-image",
-    "stream": true,
-    "messages": [
-      {"role":"user","content":"一只在太空漂浮的猫"}
-    ],
-    "image_config": {
-      "n": 2,
-      "size": "1024x1024",
-      "response_format": "url"
-    }
-  }'
+Egress nodes are scoped to Build, Web, Console, or Web assets. The admin console supports:
+
+- HTTP, HTTPS, SOCKS4/4A, SOCKS5/5H, Resin, Trojan, VLESS, Shadowsocks, and VMess
+- TCP, WebSocket, and TLS tunnel transports; unsupported variants are rejected during import
+- Subscription and text/Base64 import
+- Batch probes, filtering, deletion, assignment, and balancing
+- Fallback per scope: none, direct, or a fixed node
+- Proxy-pool mode without global cooldown after one connection failure
+- Immediate recovery probes after fixed-proxy transport failures, with per-node coalescing and bounded waiting for fast retry
+- Optional [Egress Quality Guard](./tools/egress-quality-guard/README.md) for active per-node model probes, guarded quarantine, and recovery; enable it with the built-in `quality-guard` Compose profile
+- Nodes whose proxy username contains `{account}` are treated as lease-scoped: a passive anomaly temporarily removes only the audited account lease, then recovery pins the probe to that same account and node. An unhealthy probe renews the hold; an expired hold no longer blocks routing if the sidecar is unavailable, so stale guard state cannot strand an account indefinitely. The shared node is never disabled and the rendered proxy identity is never exposed. Ordinary fixed sticky sessions can still be managed as separate nodes
+
+Hysteria and TUIC are not supported yet. FlareSolverr accepts only HTTP/SOCKS proxy URLs, so automatic clearance refresh cannot use a tunnel share URL directly.
+
+To enable the guard, add a `qualityGuard` section to `config.yaml`, then start
+the profile. The main service creates and reuses a non-exportable system probe
+identity automatically:
+
+```yaml
+qualityGuard:
+  enabled: true
+  model: "grok-4.6"
+  # Withhold thinking-model streams that have no streamed reasoning.
+  # Observe for up to 30s. An open stream with a reasoning start and visible
+  # output is released at the deadline; empty/terminal failures still retry.
+  requestRetry:
+    enabled: true
+    maxAttempts: 6
+    holdTimeout: 30s
+    minOutputTokens: 8
+    onExhausted: fail_closed # fail_open | fail_closed
+    accountCooldown: 12h
+    idleAccountCooldown: 15m
 ```
 
-视频：
+`requestRetry` runs on the gateway request path and is independent of the sidecar. The example enables it. When enabled, a thinking-model stream with enough visible output and no streamed reasoning is **not delivered**; another account is tried. If every attempt still has no reasoning, `onExhausted` either returns `503 quality_degraded` or delivers the last body. Image, video, stored-response, and ForcedEgress probe requests are unchanged. Grok TUI tool turns stay held so 0-thinking dumps cannot skip the gate.
 
 ```bash
-curl http://localhost:8000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
-  -d '{
-    "model": "grok-imagine-video",
-    "stream": true,
-    "messages": [
-      {"role":"user","content":"霓虹雨夜街头，电影感慢镜头追拍"}
-    ],
-    "video_config": {
-      "seconds": 10,
-      "size": "1792x1024",
-      "resolution_name": "720p",
-      "preset": "normal"
-    }
-  }'
+docker compose --profile quality-guard up -d --build
 ```
 
-<details>
-<summary>字段说明</summary>
-<br>
+Existing preview deployments that still contain `clientKeyID` can upgrade
+directly. The field is accepted for compatibility but ignored and can be
+removed; any manually created probe key is intentionally left untouched.
 
-| 字段 | 说明 |
-| :-- | :-- |
-| `messages` | 支持文本与多模态内容块 |
-| `stream` | 是否流式输出；不传时使用 `features.stream` 默认值 |
-| `reasoning_effort` | `none`, `minimal`, `low`, `medium`, `high`, `xhigh`；`none` 会关闭思考输出 |
-| `temperature` / `top_p` | 采样参数，默认 `0.8` / `0.95` |
-| `tools` | OpenAI function tools 结构 |
-| `tool_choice` | `auto`, `required` 或指定函数工具 |
-| `image_config` | 图像模型参数 |
-| \|_ `n` | `lite` 为 `1-4`，其他图像模型为 `1-10`，编辑模型为 `1-2` |
-| \|_ `size` | `1280x720`, `720x1280`, `1792x1024`, `1024x1792`, `1024x1024` |
-| \|_ `response_format` | `url`, `b64_json` |
-| `video_config` | 视频模型参数 |
-| \|_ `seconds` | `6`, `10`, `12`, `16`, `20` |
-| \|_ `size` | `720x1280`, `1280x720`, `1024x1024`, `1024x1792`, `1792x1024` |
-| \|_ `resolution_name` | `480p`, `720p` |
-| \|_ `preset` | `fun`, `normal`, `spicy`, `custom` |
+After changing this configuration, run `docker compose --profile quality-guard restart grok2api egress-quality-guard` to reload the base settings; policy edits made in the admin page still hot-reload.
 
-<br>
-</details>
+The normal `docker compose up -d` command does not start the guard or generate
+probe traffic. The sidecar receives a narrowly scoped internal credential from
+the main service and never stores or uses the administrator password. See the
+linked guide before enabling automatic quarantine.
 
-<br>
-</details>
+Resin usernames can contain `{account}`:
 
-<details>
-<summary><code>POST /v1/responses</code></summary>
-<br>
-
-```bash
-curl http://localhost:8000/v1/responses \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
-  -d '{
-    "model": "grok-4.20-auto",
-    "input": "解释一下量子隧穿",
-    "instructions": "用简洁的中文回答",
-    "stream": true,
-    "reasoning": {
-      "effort": "high"
-    }
-  }'
+```text
+socks5h://Default.{account}:RESIN_PROXY_TOKEN@resin:2260
 ```
 
-<details>
-<summary>字段说明</summary>
-<br>
+The placeholder becomes a stable anonymous identity. Linked Web, Build, and Console accounts can share it; raw tokens and email addresses are not used.
 
-| 字段 | 说明 |
-| :-- | :-- |
-| `model` | 模型 ID，需为已启用模型 |
-| `input` | 用户输入；支持字符串或 Responses API 风格的消息数组 |
-| `instructions` | 可选系统指令，会作为 system 消息注入 |
-| `stream` | 是否流式输出；不传时使用 `features.stream` 默认值 |
-| `reasoning` | 可选思考配置 |
-| \|_ `effort` | `none` 会关闭思考输出；其他值会开启思考输出 |
-| `temperature` / `top_p` | 采样参数，默认 `0.8` / `0.95` |
-| `tools` / `tool_choice` | 支持函数工具；Responses API 的扁平工具格式会自动转换 |
-
-<br>
-</details>
-
-<br>
-</details>
-
-<details>
-<summary><code>POST /v1/messages</code></summary>
-<br>
+For managed Web/Console Cloudflare Clearance:
 
 ```bash
-curl http://localhost:8000/v1/messages \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
-  -d '{
-    "model": "grok-4.20-auto",
-    "stream": true,
-    "thinking": {
-      "type": "enabled",
-      "budget_tokens": 1024
-    },
-    "messages": [
-      {
-        "role": "user",
-        "content": "用三句话解释量子隧穿"
-      }
-    ]
-  }'
+docker compose --profile flaresolverr up -d
 ```
 
-<details>
-<summary>字段说明</summary>
-<br>
+Then use `http://flaresolverr:8191` under **Runtime Settings → Media & Network → Clearance** and select one of the managed modes:
 
-| 字段 | 说明 |
-| :-- | :-- |
-| `model` | 模型 ID，需为已启用模型 |
-| `messages` | Anthropic Messages 格式消息，支持文本、图片、文档和工具结果块 |
-| `system` | 可选系统提示词，支持字符串或文本块数组 |
-| `stream` | 是否流式输出；不传时使用 `features.stream` 默认值 |
-| `thinking` | 可选思考配置 |
-| \|_ `type` | `disabled` 会关闭思考输出；其他配置会开启思考输出 |
-| `max_tokens` | 接收但当前会忽略，Grok 上游不暴露该参数 |
-| `tools` / `tool_choice` | 支持 Anthropic 工具格式，会转换为内部 function tools |
+- `FlareSolverr` proactively refreshes stale fixed-egress Clearance on the configured schedule.
+- `On demand` keeps the last successful Clearance regardless of age and solves again only after an upstream rejection explicitly invalidates it. Scheduled refresh does not launch a browser in this mode.
 
-<br>
-</details>
+`Manual` never invokes FlareSolverr. The on-demand mode can make the first request without a managed Clearance; if Cloudflare rejects it, the next lease performs one deduplicated solve.
 
-<br>
-</details>
+The egress layer retries only connection failures known to occur before request submission. It does not replay submitted generation requests, authentication failures, exhausted quotas, or upstream rate limits.
 
-<details>
-<summary><code>POST /v1/images/generations</code></summary>
-<br>
+When a fixed proxy enters cooldown after a transport failure, grok2api starts an independent connectivity probe immediately. Concurrent failures share one probe. A later request bound to that node waits for at most five seconds, reloads persisted node state after a healthy probe, and continues without waiting for the full cooldown. An unhealthy probe preserves the cooldown. Proxy-pool leases use fresh tunnels, so one rotating exit failure never cools the whole pool. See [Immediate egress failure probe and bounded retry](./backend/internal/infra/egress/FAILURE_RETRY.md) for the design and safety invariants.
+
+## Configuration and deployment
+
+`config.yaml` contains startup settings; Provider and operational settings are managed in the admin console and hot-reload unless marked otherwise.
+
+| Deployment | Database | Runtime store | Media |
+| :-- | :-- | :-- | :-- |
+| Single instance | SQLite | Memory | Local directory |
+| Multiple instances | PostgreSQL | Redis | Shared read/write directory |
+
+Multi-instance deployments require a unique `deployment.instanceID` per replica, one shared `clusterID`, and `sharedMedia: true` only after the media directory is shared correctly.
+
+PostgreSQL credentials can be injected without storing them in `config.yaml`:
 
 ```bash
-curl http://localhost:8000/v1/images/generations \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
-  -d '{
-    "model": "grok-imagine-image",
-    "prompt": "一只在太空漂浮的猫",
-    "n": 1,
-    "size": "1792x1024",
-    "response_format": "url"
-  }'
+GROK2API_DATABASE_URL='postgresql://user:password@host:5432/grok2api?sslmode=require' docker compose up -d
 ```
 
-<details>
-<summary>字段说明</summary>
-<br>
+A non-empty `GROK2API_DATABASE_URL` overrides `database.postgres.dsn` and automatically selects the `postgres` driver. An empty value is ignored. Supported URL schemes are `postgres://` and `postgresql://`; SQLAlchemy's `postgresql+asyncpg://` form is rejected with a migration hint. The application does not implicitly read the generic `DATABASE_URL`; platforms that provide it can map it explicitly with `GROK2API_DATABASE_URL: "${DATABASE_URL}"`. Database configuration precedence is built-in defaults, `config.yaml`, then `GROK2API_DATABASE_URL`. The current CLI has no database override.
 
-| 字段 | 说明 |
-| :-- | :-- |
-| `model` | 图像模型：`grok-imagine-image-lite`, `grok-imagine-image`, `grok-imagine-image-pro` |
-| `prompt` | 图片生成提示词 |
-| `n` | 生成数量；`lite` 为 `1-4`，其他图像模型为 `1-10` |
-| `size` | 支持 `1280x720`, `720x1280`, `1792x1024`, `1024x1792`, `1024x1024` |
-| `response_format` | `url` 或 `b64_json` |
+### Client IPs behind a reverse proxy
 
-<br>
-</details>
+Request audits record the normalized client IPv4 or IPv6 address. Direct deployments need no extra configuration. Behind Nginx or another reverse proxy, configure both sides:
 
-<br>
-</details>
+1. Forward the standard client IP headers from the proxy:
 
-<details>
-<summary><code>POST /v1/images/edits</code></summary>
-<br>
+```nginx
+location / {
+    proxy_pass http://127.0.0.1:8000;
 
-```bash
-curl http://localhost:8000/v1/images/edits \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
-  -F "model=grok-imagine-image-edit" \
-  -F "prompt=把这张图变清晰一些" \
-  -F "image[]=@/path/to/image.png" \
-  -F "n=1" \
-  -F "size=1024x1024" \
-  -F "response_format=url"
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
 ```
 
-<details>
-<summary>字段说明</summary>
-<br>
+2. Trust only the proxy address or its isolated network in `config.yaml`:
 
-| 字段 | 说明 |
-| :-- | :-- |
-| `model` | 图像编辑模型，目前为 `grok-imagine-image-edit` |
-| `prompt` | 编辑指令 |
-| `image[]` | 参考图片，multipart 文件字段；最多使用 5 张 |
-| `n` | 生成数量，范围 `1-2` |
-| `size` | 当前仅支持 `1024x1024` |
-| `response_format` | `url` 或 `b64_json` |
-| `mask` | 暂不支持；传入会返回校验错误 |
+```yaml
+server:
+  trustedProxies:
+    - "127.0.0.1"
+```
 
-<br>
-</details>
-
-<br>
-</details>
-
-<details>
-<summary><code>POST /v1/videos</code></summary>
-<br>
+With Docker, the peer seen by grok2api may be the bridge gateway or another container rather than `127.0.0.1`. Inspect the Compose network before configuring it:
 
 ```bash
-curl http://localhost:8000/v1/videos \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
-  -F "model=grok-imagine-video" \
-  -F "prompt=霓虹雨夜街头，电影感慢镜头追拍" \
-  -F "seconds=10" \
-  -F "size=1792x1024" \
-  -F "resolution_name=720p" \
-  -F "preset=normal" \
-  -F "input_reference[]=@/path/to/reference.png"
+docker network inspect grok2api_default \
+  --format '{{(index .IPAM.Config 0).Subnet}}'
+```
+
+For example, an isolated network reported as `172.20.0.0/16` can be configured as a trusted proxy CIDR. Never use `0.0.0.0/0` or `::/0`; grok2api rejects unrestricted trusted-proxy ranges. Without `trustedProxies`, forwarded headers are ignored and audits contain the direct TCP peer address, preventing clients from spoofing `X-Forwarded-For`.
+
+If Cloudflare is in front of Nginx, configure Nginx's real-IP module with `CF-Connecting-IP` and Cloudflare's official proxy ranges first. Do not trust `CF-Connecting-IP` from arbitrary peers. Restart grok2api after changing `server.trustedProxies`; reload Nginx after changing its configuration.
+
+Important optional settings:
+
+- `audit.ledgerMode`: `observe` reports ledger faults; `enforce` can pause new inference to protect billing integrity.
+- `routing.accountIsolatedConnections`: partitions outbound TCP/HTTP pools by account for external L4 or connection-hash load balancers. It is off by default because it increases connections, TLS handshakes, memory, and file-descriptor usage.
+- `routing.segmentedSelectorEnabled`: enabled by default for pools with at least 3,000 eligible accounts; bounds dynamic concurrency reads while retaining quota/tier priorities, sticky sessions, full-planner fallback, and atomic guards.
+- `routing.autoAssignMaxNodeShare` / `routing.autoAssignMaxMigrationShare`: optional large-pool guards. `0` (default) keeps the historical unbounded first-pass evacuation and the existing 200-move ceiling for capacity/rebalance repair. Set `0.05`–`1` only when a quarantined node would otherwise dump thousands of auto accounts onto the last healthy exits. `GROK2API_AUTO_ASSIGN_MAX_NODE_SHARE` and `GROK2API_AUTO_ASSIGN_MAX_MIGRATION_SHARE` override the YAML when set.
+- Build response-header timeout and exact-match 403 invalidation rules are hot-reloadable.
+- **Sync latest version** applies the validated Grok Build client version and User-Agent.
+
+## Production checklist
+
+- Use HTTPS and enable `auth.secureCookies`.
+- Keep Swagger disabled on public deployments.
+- Use strong, backed-up secrets; never commit credentials, cookies, exports, or databases.
+- Back up `config.yaml`, the database, and media storage.
+- Use PostgreSQL, Redis, and shared media for multiple instances.
+- Put a reverse proxy and access controls in front of public deployments.
+
+## Development
+
+```bash
+cd backend
+go test ./...
+go test -race ./...
+go vet ./...
+go build ./cmd/grok2api
 ```
 
 ```bash
-curl http://localhost:8000/v1/videos/<video_id> \
-  -H "Authorization: Bearer $GROK2API_API_KEY"
-
-curl -L http://localhost:8000/v1/videos/<video_id>/content \
-  -H "Authorization: Bearer $GROK2API_API_KEY" \
-  -o result.mp4
+cd frontend
+pnpm install --frozen-lockfile
+pnpm lint
+pnpm build
 ```
 
-<details>
-<summary>字段说明</summary>
-<br>
+Regenerate Swagger after changing public API annotations:
 
-| 字段 | 说明 |
-| :-- | :-- |
-| `model` | 视频模型，目前为 `grok-imagine-video` |
-| `prompt` | 视频生成提示词 |
-| `seconds` | 视频长度：`6`, `10`, `12`, `16`, `20` |
-| `size` | 支持 `720x1280`, `1280x720`, `1024x1024`, `1024x1792`, `1792x1024` |
-| `resolution_name` | `480p` 或 `720p` |
-| `preset` | `fun`, `normal`, `spicy`, `custom` |
-| `input_reference[]` | 可选图生视频参考图，multipart 文件字段；最多使用前 7 张 |
-| `video_id` | `POST /v1/videos` 返回的视频任务 ID，用于查询任务或下载成片 |
+```bash
+make swagger
+```
 
-<br>
-</details>
+## Documentation
 
-<br>
-</details>
-
-<br>
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Chenyme/grok2api&type=Timeline)](https://star-history.com/#Chenyme/grok2api&Timeline)
+- [简体中文 README](./README.zh-CN.md)
+- [Backend guide](./backend/README.md)
+- [Frontend guide](./frontend/README.md)
