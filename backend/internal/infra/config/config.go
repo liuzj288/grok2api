@@ -29,7 +29,7 @@ const (
 	ClearanceModeOnDemand         = "on_demand"
 	DefaultStatsigSignerURL       = "https://grok.wodf.de/sign"
 	DefaultFlareSolverrURL        = "http://flaresolverr:8191"
-	RecommendedBuildClientVersion = "1.0.4"
+	RecommendedBuildClientVersion = "1.0.60"
 	RecommendedBuildUserAgent     = "grok-shell/" + RecommendedBuildClientVersion + " (linux; x86_64)"
 
 	maxServerBodyBytes     = 256 << 20
@@ -164,23 +164,24 @@ type BuildProviderConfig struct {
 const DefaultBuildFallbackBaseURL = "https://api.x.ai/v1"
 
 type WebProviderConfig struct {
-	BaseURL             string   `yaml:"baseURL"`
-	StatsigMode         string   `yaml:"-"`
-	StatsigManualValue  string   `yaml:"-"`
-	StatsigSignerURL    string   `yaml:"-"`
-	ClearanceMode       string   `yaml:"-"`
-	FlareSolverrURL     string   `yaml:"-"`
-	ClearanceTimeout    Duration `yaml:"-"`
-	ClearanceRefresh    Duration `yaml:"-"`
-	QuotaTimeout        Duration `yaml:"quotaTimeout"`
-	ChatTimeout         Duration `yaml:"chatTimeout"`
-	StreamIdleTimeout   Duration `yaml:"-"`
-	ImageTimeout        Duration `yaml:"imageTimeout"`
-	VideoTimeout        Duration `yaml:"videoTimeout"`
-	MediaConcurrency    int      `yaml:"mediaConcurrency"`
-	AllowNSFW           bool     `yaml:"allowNSFW"`
-	RecoveryBackoffBase Duration `yaml:"recoveryBackoffBase"`
-	RecoveryBackoffMax  Duration `yaml:"recoveryBackoffMax"`
+	BaseURL              string   `yaml:"baseURL"`
+	StatsigMode          string   `yaml:"-"`
+	StatsigManualValue   string   `yaml:"-"`
+	StatsigSignerURL     string   `yaml:"-"`
+	ClearanceMode        string   `yaml:"-"`
+	FlareSolverrURL      string   `yaml:"-"`
+	ClearanceTimeout     Duration `yaml:"-"`
+	ClearanceRefresh     Duration `yaml:"-"`
+	QuotaTimeout         Duration `yaml:"quotaTimeout"`
+	ChatTimeout          Duration `yaml:"chatTimeout"`
+	StreamIdleTimeout    Duration `yaml:"-"`
+	ImageTimeout         Duration `yaml:"imageTimeout"`
+	VideoTimeout         Duration `yaml:"videoTimeout"`
+	MediaConcurrency     int      `yaml:"mediaConcurrency"`
+	AllowNSFW            bool     `yaml:"allowNSFW"`
+	FreeVideoDurationCap int      `yaml:"freeVideoDurationCap"`
+	RecoveryBackoffBase  Duration `yaml:"recoveryBackoffBase"`
+	RecoveryBackoffMax   Duration `yaml:"recoveryBackoffMax"`
 }
 
 type ConsoleProviderConfig struct {
@@ -294,10 +295,14 @@ type QualityGuardRequestRetryConfig struct {
 	HoldTimeout     Duration `yaml:"holdTimeout"`
 	MinOutputTokens int      `yaml:"minOutputTokens"`
 	OnExhausted     string   `yaml:"onExhausted"`
+	// AutoDisable also enables request-path detection without changing Enabled.
+	AutoDisable     bool     `yaml:"autoDisable"`
 	AccountCooldown Duration `yaml:"accountCooldown"`
 	// IdleAccountCooldown cools an account after a truly empty upstream
 	// stream. Independent of accountCooldown (missing-thinking). Zero uses 15m.
-	IdleAccountCooldown Duration `yaml:"idleAccountCooldown"`
+	IdleAccountCooldown             Duration `yaml:"idleAccountCooldown"`
+	MinEncryptedBytes               int      `yaml:"minEncryptedBytes"`
+	EncryptedBytesPerReasoningToken int      `yaml:"encryptedBytesPerReasoningToken"`
 }
 
 type ClientKeyDefaultsConfig struct {
@@ -312,6 +317,7 @@ type AccountsConfig struct {
 	// ExcludeBuildBotFlaggedFromScheduling removes Build accounts with bot_flag_source/bfs in {1,2}
 	// from scheduling only. Linked Web/Console accounts are unaffected.
 	ExcludeBuildBotFlaggedFromScheduling bool
+	AutoDeleteConsoleUnlinked            bool
 	AutoCleanReauthEnabled               bool
 	AutoCleanReauthInterval              Duration
 	AutoCleanReauthMinAge                Duration
@@ -644,6 +650,9 @@ func (c Config) Validate() error {
 	if c.Provider.Web.MediaConcurrency < 1 || c.Provider.Web.MediaConcurrency > 64 {
 		return errors.New("provider.web 媒体并发必须在 1 到 64 之间")
 	}
+	if c.Provider.Web.FreeVideoDurationCap != 0 && (c.Provider.Web.FreeVideoDurationCap < settingsdomain.MinWebFreeVideoDurationCap || c.Provider.Web.FreeVideoDurationCap > settingsdomain.MaxWebFreeVideoDurationCap) {
+		return errors.New("provider.web free 视频时长上限必须在 1 到 15 秒之间")
+	}
 	consoleURL, err := url.ParseRequestURI(strings.TrimSpace(c.Provider.Console.BaseURL))
 	if err != nil || consoleURL.Scheme != "https" || consoleURL.Host == "" || consoleURL.User != nil {
 		return errors.New("provider.console.baseURL 必须是无凭据的 HTTPS URL")
@@ -734,6 +743,15 @@ func validateQualityGuardConfig(value QualityGuardConfig) error {
 	if err := validateQualityGuardRequestRetry(value.RequestRetry); err != nil {
 		return err
 	}
+	// Automatic account disabling uses these thresholds without the sidecar.
+	if value.Enabled || value.RequestRetry.AutoDisable {
+		if value.SoftTPS < 1 || value.HardTPS <= value.SoftTPS || value.HardTPS > 10000 {
+			return errors.New("qualityGuard TPS 阈值无效")
+		}
+		if value.MinimumGenerationWindow.Value() < time.Millisecond || value.MinimumGenerationWindow.Value() > 2*time.Minute {
+			return errors.New("qualityGuard.minimumGenerationWindow 必须在 1 毫秒到 2 分钟之间")
+		}
+	}
 	if !value.Enabled {
 		return nil
 	}
@@ -752,9 +770,6 @@ func validateQualityGuardConfig(value QualityGuardConfig) error {
 	if value.PassivePollInterval.Value() < time.Second || value.PassivePollInterval.Value() > 5*time.Minute {
 		return errors.New("qualityGuard.passivePollInterval 必须在 1 秒到 5 分钟之间")
 	}
-	if value.SoftTPS < 1 || value.HardTPS <= value.SoftTPS || value.HardTPS > 10000 {
-		return errors.New("qualityGuard TPS 阈值无效")
-	}
 	if value.ConsecutiveSoft < 1 || value.ConsecutiveSoft > 20 || value.ConsecutiveErrors < 1 || value.ConsecutiveErrors > 20 {
 		return errors.New("qualityGuard 连续异常次数必须在 1 到 20 之间")
 	}
@@ -766,9 +781,6 @@ func validateQualityGuardConfig(value QualityGuardConfig) error {
 	}
 	if value.MaxOutputTokens < 32 || value.MaxOutputTokens > 4096 {
 		return errors.New("qualityGuard.maxOutputTokens 必须在 32 到 4096 之间")
-	}
-	if value.MinimumGenerationWindow.Value() < time.Millisecond || value.MinimumGenerationWindow.Value() > 2*time.Minute {
-		return errors.New("qualityGuard.minimumGenerationWindow 必须在 1 毫秒到 2 分钟之间")
 	}
 	if value.RotationTimeout.Value() < 5*time.Second || value.RotationTimeout.Value() > 5*time.Minute {
 		return errors.New("qualityGuard.rotationTimeout 必须在 5 秒到 5 分钟之间")
@@ -786,7 +798,7 @@ func validateQualityGuardConfig(value QualityGuardConfig) error {
 }
 
 func validateQualityGuardRequestRetry(value QualityGuardRequestRetryConfig) error {
-	if !value.Enabled {
+	if !value.Enabled && !value.AutoDisable {
 		return nil
 	}
 	if value.MaxAttempts != 0 && (value.MaxAttempts < 1 || value.MaxAttempts > 6) {
@@ -808,6 +820,12 @@ func validateQualityGuardRequestRetry(value QualityGuardRequestRetryConfig) erro
 	}
 	if d := value.IdleAccountCooldown.Value(); d != 0 && (d < time.Minute || d > 168*time.Hour) {
 		return errors.New("qualityGuard.requestRetry.idleAccountCooldown 必须在 1m 到 168h 之间")
+	}
+	if value.MinEncryptedBytes != 0 && (value.MinEncryptedBytes < 64 || value.MinEncryptedBytes > 4096) {
+		return errors.New("qualityGuard.requestRetry.minEncryptedBytes 必须在 64 到 4096 之间")
+	}
+	if value.EncryptedBytesPerReasoningToken != 0 && (value.EncryptedBytesPerReasoningToken < 1 || value.EncryptedBytesPerReasoningToken > 16) {
+		return errors.New("qualityGuard.requestRetry.encryptedBytesPerReasoningToken 必须在 1 到 16 之间")
 	}
 	return nil
 }
@@ -897,7 +915,7 @@ func defaultConfig() Config {
 				ChatTimeout:  Duration(2 * time.Minute), StreamIdleTimeout: Duration(settingsdomain.DefaultWebStreamIdleTimeout),
 				ImageTimeout:     Duration(3 * time.Minute),
 				VideoTimeout:     Duration(15 * time.Minute),
-				MediaConcurrency: 4, RecoveryBackoffBase: Duration(30 * time.Second),
+				MediaConcurrency: 4, FreeVideoDurationCap: settingsdomain.DefaultWebFreeVideoDurationCap, RecoveryBackoffBase: Duration(30 * time.Second),
 				RecoveryBackoffMax: Duration(30 * time.Minute),
 			},
 			Console: ConsoleProviderConfig{BaseURL: "https://console.x.ai", ChatTimeout: Duration(5 * time.Minute), StreamIdleTimeout: Duration(settingsdomain.DefaultConsoleStreamIdleTimeout)},
@@ -944,6 +962,7 @@ func defaultConfig() Config {
 			RequestRetry: QualityGuardRequestRetryConfig{
 				MaxAttempts: 6, HoldTimeout: Duration(30 * time.Second), MinOutputTokens: 8, OnExhausted: "fail_closed",
 				AccountCooldown: Duration(12 * time.Hour), IdleAccountCooldown: Duration(15 * time.Minute),
+				MinEncryptedBytes: 256, EncryptedBytesPerReasoningToken: 4,
 			},
 		},
 		ClientKeyDefaults: ClientKeyDefaultsConfig{RPMLimit: clientkeydomain.DefaultRPMLimit, MaxConcurrent: clientkeydomain.DefaultMaxConcurrent},
@@ -951,6 +970,7 @@ func defaultConfig() Config {
 			MarkBuildForbiddenReauth:             false,
 			BuildForbiddenReauthCodes:            []string{"permission-denied"},
 			ExcludeBuildBotFlaggedFromScheduling: false,
+			AutoDeleteConsoleUnlinked:            false,
 			AutoCleanReauthEnabled:               false,
 			AutoCleanReauthInterval:              Duration(10 * time.Minute),
 			AutoCleanReauthMinAge:                Duration(time.Hour),

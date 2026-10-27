@@ -48,12 +48,8 @@
 <td valign="middle">Right Code 是一个企业级 AI Agent 分发平台，主要提供稳定的 Claude Code、Codex、Gemini 等模型的中转服务。充值即可开票，企业、团队用户一对一对接。感谢 Right Code 提供的 Tokens 支持，点击 <a href="https://www.right.codes/register">此处</a> 注册并开始使用！</td>
 </tr>
 <tr>
-<td width="200" align="center" valign="middle"><a href="https://api.fenno.ai/s/xCBS"><img src="frontend/public/sponner/fenno-ai.jpg" alt="FennoAI" width="160"></a></td>
-<td valign="middle">FennoAI 面向企业研发团队和开发者提供企业级的高稳定、高性能 API 中转服务，兼容 OpenAI 与 Anthropic 协议，可接入 Codex、Claude Code、OpenCode 等主流 AI 编程工具。平台具备企业级稳定性，可支撑千亿 Token/日调用，以及境内外主体公对公结算与开票。Grok2API 用户通过<a href="https://api.fenno.ai/s/xCBS">专属链接</a>购买订阅，仅需 1.99 美元即可获得价值 50 美元的 Coding Plan 额度，邀请好友购买最高可获 20% 返佣。</td>
-</tr>
-<tr>
-<td width="200" align="center" valign="middle"><a href="https://s.qiniu.com/RNNZFf"><img src="frontend/public/sponner/qiniu.jpg" alt="七牛云 AI" width="160"></a></td>
-<td valign="middle">七牛云 AI 是七牛云（02567.HK）旗下企业级大模型 MaaS 平台，可一站式调用全球 150+ 主流模型，兼容主流模型厂商协议，覆盖文本、图像、音频、视频和文件处理等全模态能力，已服务超过 169 万企业及开发者用户。Grok2API 用户通过<a href="https://s.qiniu.com/RNNZFf">专属链接</a>注册，企业用户可免费领取 1200 万 Token，开发者可免费领取 300 万 Token。</td>
+<td width="200" align="center" valign="middle"><a href="https://www.rapidproxy.io/?ref=grok2api"><img src="frontend/public/sponner/rapid-proxy.jpg" alt="RapidProxy" width="180"></a></td>
+<td valign="middle">RapidProxy 是面向开发者的数据采集代理方案，提供稳定可靠的住宅代理服务。拥有 9000 万+ 全球住宅 IP，覆盖 200+ 个国家和地区，支持智能轮换与精准地域定位，帮助网页抓取、AI 数据训练、SEO 监控、电商数据分析等项目突破访问限制、提升采集效率。支持 Playwright、Selenium、Puppeteer 等主流自动化框架，价格低至 $0.65/GB，<a href="https://www.rapidproxy.io/?ref=grok2api">立即免费测试</a>。</td>
 </tr>
 </table>
 
@@ -297,7 +293,7 @@ Web 可与对应的 Build、Console 建立一对一弱关联。关联只共享�
 
 ### Codex、Claude Code 与 Prompt Cache
 
-Responses 与 Messages 支持流式、工具、推理、多轮会话和 compact。客户端会话信号会保持稳定，用于 Grok Build Prompt Cache 亲和；实际命中仍要求上游账号兼容且请求前缀未变化。同一网关实例内，仍可解密的 compact 摘要在 session / PromptCacheKey 漂移后也会展开；无法解密的外源 blob 仍视为兼容边界。
+Responses 与 Messages 支持流式、工具、推理、多轮会话和 compact。客户端会话信号会保持稳定，用于 Grok Build Prompt Cache 亲和；实际命中仍要求上游账号兼容且请求前缀未变化。同一网关实例内，仍可解密的 `g2a_compact_v1` 摘要在 session / PromptCacheKey 漂移后也会展开；带该前缀但无法解码的 blob 会返回 400。其他 compact blob 作为上游原始状态转发时会保留原始 `encrypted_content`；若 Build 拒绝，该错误会原样返回客户端。
 
 Responses 与 Chat Completions 按 OpenAI 语义报告输入总量；Messages 按 Anthropic 语义分开报告未缓存输入和缓存读取。审计保留输入总量与缓存部分，用于计费对账。
 
@@ -365,19 +361,21 @@ qualityGuard:
   enabled: true
   model: "grok-4.6"
   # 思考模型缺流式 reasoning 时先扣住响应，换号再打，不把降智正文发给用户。
-  # 最多观察 30 秒；已有 reasoning 起始信号和可见输出的进行中流会在超时后放行，
-  # 空流和终态仍无 thinking 的响应继续换号。
+  # 最多观察 30 秒；stub 加上足够可见输出在超时后扣住（TUI 30s 后的短问候），
+  # 空 stub 继续等。floor 已达标但 1 秒内吐短回复的也扣。
   requestRetry:
     enabled: true
     maxAttempts: 6
     holdTimeout: 30s
     minOutputTokens: 8
     onExhausted: fail_closed # fail_open | fail_closed
+    # 首次确认缺 thinking 或吞吐降智（soft/hard/burst）时立即禁用账号。
+    autoDisable: true
     accountCooldown: 12h
     idleAccountCooldown: 15m
 ```
 
-`requestRetry` 在网关请求路径上生效，与 sidecar 探测/隔离相互独立。示例配置默认开启。开启后，可见输出达到 `minOutputTokens` 且全程无流式 reasoning 时**不发给用户**，排除该账号再试；全部仍无推理则按 `onExhausted` 返回 `503 quality_degraded` 或放出最后一枪。不处理图/视频、stored response 钉账号和 ForcedEgress 探针。Grok TUI 带 tools 的回合仍会 hold，避免 0-thinking 降智流跳过闸门。
+`requestRetry` 在网关请求路径上生效，与 sidecar 探测/隔离相互独立。上面的示例显式开启；内置默认值和 `config.example.yaml` 均将 `enabled`、`autoDisable` 设为关闭。任一开关开启后都会启用请求内质量检测与重试。可见输出达到 `minOutputTokens` 且全程无流式 reasoning 时**不发给用户**，排除该账号再试；`autoDisable: true` 会在首次确认缺 thinking 或吞吐降智（soft/hard/burst）时直接禁用账号。管理页面的“自动停用降智账号”控制 `autoDisable`，关闭后恢复 YAML 中 `requestRetry.enabled` 的原有策略。全部仍无推理则按 `onExhausted` 返回 `503 quality_degraded` 或放出最后一枪。上下文压缩同时豁免缺 thinking 和输出速度的账号惩罚。不处理图/视频、stored response 钉账号和 ForcedEgress 探针。Grok TUI 带 tools 的回合仍会 hold，避免 0-thinking 降智流跳过闸门。
 
 ```bash
 docker compose --profile quality-guard up -d --build
